@@ -7,7 +7,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   /* Iniciamos con BrowserRouter, este cargara todas las rutas del proyecto*/
 
   <React.StrictMode>
-    <BrowserRouter basename='/github-pos-minimarket/'>
+    <BrowserRouter>
       <App />
     </BrowserRouter>
   </React.StrictMode>,
