@@ -1,13 +1,13 @@
 //Contexto global por lo cual sera el único
 
-import { Children, createContext, useContext, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "../supabase/supabase.config";
 //AuthContext empieza vacio
 const AuthContext = createContext();
 
 //Utilizamos hoock nativo de React
-export const AuthContextProvider = ({ Children }) => {
-    const [user, setUser] = setUser([]);
+export const AuthContextProvider = ({ children }) => {
+    const [user, setUser] = useState([]);
     useEffect(() => {
         const { data } = supabase.auth.onAuthStateChange(async (event, session) => {
             console.log(event);
@@ -20,7 +20,7 @@ export const AuthContextProvider = ({ Children }) => {
 
     return (
         //Provider enriquece a los hijos, se comparte el provider en este caso user
-        <AuthContext.Provider value={user}> {Children} </AuthContext.Provider>
+        <AuthContext.Provider value={user}> {children} </AuthContext.Provider>
     )
 };
 //Si quiero consumir sera atravez de UserAuth
