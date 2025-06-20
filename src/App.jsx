@@ -1,19 +1,23 @@
 import styled, { ThemeProvider } from "styled-components"
-import { GlobalStyles, MyRoutes, Sidebar, useThemeStore } from "./index"
+import { AuthContextProvider, GlobalStyles, MyRoutes, Sidebar, useThemeStore } from "./index"
 import { Device } from "./styles/BreakPoints"
 import { useState } from "react";
 function App() {
-  const [ sidebarOpen, setSidebarOpen ] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const { themeStyle } = useThemeStore();
   return (
+    //El AuthContextProvider escuchara todo lo que se realice en los childrens
     <ThemeProvider theme={themeStyle}>
-      <Container className={sidebarOpen?"active":""}>
-        <GlobalStyles />
-        <section className="contentSidebar"><Sidebar state={sidebarOpen} setState={() => setSidebarOpen(!sidebarOpen)} /></section>
-        <section className="contentMenuDropdown">menu dropdown</section>
-        <section className="contentRouters"><MyRoutes /></section>
+      <AuthContextProvider>
+        <Container className={sidebarOpen ? "active" : ""}>
+          <GlobalStyles />
+          <section className="contentSidebar"><Sidebar state={sidebarOpen} setState={() => setSidebarOpen(!sidebarOpen)} /></section>
+          <section className="contentMenuDropdown">menu dropdown</section>
+          <section className="contentRouters"><MyRoutes /></section>
 
-      </Container>
+        </Container>
+      </AuthContextProvider>
+
     </ThemeProvider>
 
   )
@@ -22,7 +26,7 @@ const Container = styled.main`
   display: grid;
   grid-template-columns: 1fr;
   transition: 0.1s ease-in-out;
-  color: ${({theme}) => theme.text};
+  color: ${({ theme }) => theme.text};
 
   .contentSidebar{
     display: none;
