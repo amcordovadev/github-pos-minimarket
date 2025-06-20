@@ -17,12 +17,12 @@ export function LoginTemplate() {
                     <input className="form__field" placeholder="contraseña" type="password"/>
                 </InputText2>
 
-                <Btnsave funcion={loginGoogle} titulo={"Ingresar"} bgcolor={"#1cf6b8"} color={"255,255,255"} width={"100%"}/>
+                <Btnsave titulo={"Ingresar"} bgcolor={"#1cf6b8"} color={"255,255,255"} width={"100%"}/>
             </form>
             <Linea>
                 <span>O</span>
             </Linea>
-            <Btnsave titulo={"Google"} bgcolor={"#fff"} icono={<v.iconogoogle/>}/>
+            <Btnsave funcion={loginGoogle} titulo={"Google"} bgcolor={"#fff"} icono={<v.iconogoogle/>}/>
         </div>
         <Footer/>
   </Container>);
