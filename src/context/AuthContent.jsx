@@ -9,8 +9,15 @@ const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
     const [user, setUser] = useState([]);
     useEffect(() => {
-        const { data } = supabase.auth.onAuthStateChange(async (event, session) => {
-            console.log(event);
+        const { data } = supabase.auth.onAuthStateChange(async (event,session) => {
+            if(session?.user == null){
+                setUser(null)
+            } else {
+                //.user porque contiene todos los datos que me interesa
+                setUser(session?.user)
+                console.log("session", session.user);
+            }
+            // console.log(event);
         });
         return () => {
             //siempre escuchara al bak-end si el usuario se ha logeado o cerro sesión y si el tolen expiro de google
@@ -20,7 +27,7 @@ export const AuthContextProvider = ({ children }) => {
 
     return (
         //Provider enriquece a los hijos, se comparte el provider en este caso user
-        <AuthContext.Provider value={user}> {children} </AuthContext.Provider>
+        <AuthContext.Provider value={{user}}> {children} </AuthContext.Provider>
     )
 };
 //Si quiero consumir sera atravez de UserAuth

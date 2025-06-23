@@ -1,21 +1,27 @@
 import styled, { ThemeProvider } from "styled-components"
-import { AuthContextProvider, GlobalStyles, MyRoutes, Sidebar, useThemeStore } from "./index"
+import { AuthContextProvider, GlobalStyles, MyRoutes, Sidebar, useThemeStore, Login } from "./index"
 import { Device } from "./styles/BreakPoints"
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { themeStyle } = useThemeStore();
+  const {pathname} = useLocation();
   return (
     //El AuthContextProvider escuchara todo lo que se realice en los childrens
+    //con el pathname ubicaremos en que ruta nos posicionamos y si estamos en el login que nos muestre unicamente el login
+    //evitamos mostrar los demás elementos
     <ThemeProvider theme={themeStyle}>
-      <AuthContextProvider>
-        <Container className={sidebarOpen ? "active" : ""}>
-          <GlobalStyles />
+      <AuthContextProvider> 
+        <GlobalStyles />
+        {pathname != "/login"?(<Container className={sidebarOpen ? "active" : ""}>
+          
           <section className="contentSidebar"><Sidebar state={sidebarOpen} setState={() => setSidebarOpen(!sidebarOpen)} /></section>
           <section className="contentMenuDropdown">menu dropdown</section>
           <section className="contentRouters"><MyRoutes /></section>
 
-        </Container>
+        </Container>):(<Login/>)}
+        
       </AuthContextProvider>
 
     </ThemeProvider>

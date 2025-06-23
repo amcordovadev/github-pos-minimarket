@@ -29,26 +29,35 @@ const Container = styled.div`
   font-size: 12.2px;
   color: #91a4b7;
   gap:5px;
-  margin:10px;
+  padding: 15px;
   .lock {
     border-bottom: 1px solid rgba(145, 164, 183,0.3);
     gap:5px;
     display:flex;
     align-items:center;
+    text-align: center;
+    justify-content: center;
+    padding-bottom: 10px;
+  }
+  .lock span{
+    flex-grow: 1;
   }
   .derechos {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    
    .separador{
     width:1px;
     background-color:rgba(145, 164, 183,0.3);
-    margin-top:4px;
-    height:80%;
-    align-items:center;
-    display:flex;
+    height: 15px;
+    margin: auto 0;
    }
     span{
       margin-top:5px;
+      white-space: nowrap;
     }
   }
 `;
