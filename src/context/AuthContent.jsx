@@ -32,12 +32,12 @@ export const AuthContextProvider = ({ children }) => {
         const response = await MostrarUsuarios({ id_auth: id_auth });
 
         if (response) {
-            return;    
+            return;
         } else {
-            const responseEmpresa = await InsertarEmpresa({id_auth: id_auth});
-            const responseTipoDocumento = await MostrarTiposDocumentos({id_empresa:responseEmpresa?.id});
+            const responseEmpresa = await InsertarEmpresa({ id_auth: id_auth });
+            const responseTipoDocumento = await MostrarTiposDocumentos({ id_empresa: responseEmpresa?.id });
             //console.log(responseTipoDocumento);
-            const responseRol = await MostrarRolesPorNombre({nombre:"superadmin"});
+            const responseRol = await MostrarRolesPorNombre({ nombre: "superadmin" });
             const pUser = {
                 id_tipodocumento: responseTipoDocumento[0]?.id,
                 id_rol: responseRol?.id,
