@@ -3,7 +3,8 @@ import { Btnsave, Footer, InputText2, Linea, Title, useAuthStore } from "../../i
 import { v } from "../../styles/variables";
 import { Device } from "../../styles/BreakPoints"
 export function LoginTemplate() {
-    const { loginGoogle } = useAuthStore()
+    const { loginGoogle } = useAuthStore();
+
     return (
         <Container>
             <div className="card">
@@ -27,6 +28,7 @@ export function LoginTemplate() {
                     <span>O</span>
                 </Linea>
                 <Btnsave funcion={loginGoogle} titulo={"Google"} bgcolor={"#fff"} icono={<v.iconogoogle />} />
+                
             </div>
             <Footer />
         </Container>);
