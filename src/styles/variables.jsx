@@ -47,9 +47,9 @@ import { GrAdd } from "react-icons/gr";
 
 
 export const v = {
-  colorPrincipal: `#00F34A`,
+  colorPrincipal: `#70AD21`,
   colorSecundario: `#DAC1FF`,
-  colorInstagram: 'background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%)',
+  
   iconoagregar:GrAdd,
   iconoimagenvacia: FcImageFile,
   iconoemijivacio:BsEmojiDizzy,

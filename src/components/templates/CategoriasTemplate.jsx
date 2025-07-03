@@ -6,7 +6,7 @@ export function CategoriasTemplate() {
   return (<Container>
     <section className="area1">
       <Title>Categorias</Title>
-      <Btn1/>
+      <Btn1 bgcolor={v.colorPrincipal} titulo={"Nuevo"} icono={<v.iconoagregar/>}/>
     </section>
 
     <section className="main">

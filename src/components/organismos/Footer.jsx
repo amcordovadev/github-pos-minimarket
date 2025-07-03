@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import { GiPadlock } from "react-icons/gi";
 import {FaInstagram} from "react-icons/fa";
-import {v} from "../../styles/variables"
-import { Btn1 } from "../moleculas/Btn1";
 
 export function Footer() {
     return (
