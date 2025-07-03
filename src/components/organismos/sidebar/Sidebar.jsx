@@ -114,11 +114,11 @@ const Container = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 30px;
+      width: 50px;
       cursor: pointer;
       transition: 0.3s ease;
       transform: ${({ $isopen }) =>
-          $isopen === "true" ? `scale(0.7)` : `scale(1.5)`}
+          $isopen === "true" ? `scale(0.8)` : `scale(1.2)`}
         rotate(${({ theme }) => theme.logorotate});
       img {
         width: 100%;

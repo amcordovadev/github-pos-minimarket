@@ -3,6 +3,7 @@ import { AuthContextProvider, GlobalStyles, MyRoutes, Sidebar, useThemeStore, Lo
 import { Device } from "./styles/BreakPoints"
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { themeStyle } = useThemeStore();
@@ -21,6 +22,8 @@ function App() {
           <section className="contentRouters"><MyRoutes /></section>
 
         </Container>):(<Login/>)}
+
+        <ReactQueryDevtools initialIsOpen={true} />
         
       </AuthContextProvider>
 

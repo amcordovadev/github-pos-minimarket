@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Btnsave, Footer, InputText2, Linea, Title, useAuthStore } from "../../index";
+import { Btn1, Footer, InputText2, Linea, Title, useAuthStore } from "../../index";
 import { v } from "../../styles/variables";
 import { Device } from "../../styles/BreakPoints"
 export function LoginTemplate() {
@@ -22,12 +22,12 @@ export function LoginTemplate() {
                         <input className="form__field" placeholder="contraseña" type="password" />
                     </InputText2>
 
-                    <Btnsave titulo={"Ingresar"} bgcolor={"#1cf6b8"} color={"255,255,255"} width={"100%"} />
+                    <Btn1 titulo={"Ingresar"} bgcolor={"#1cf6b8"} color={"255,255,255"} width={"100%"} />
                 </form>
                 <Linea>
                     <span>O</span>
                 </Linea>
-                <Btnsave funcion={loginGoogle} titulo={"Google"} bgcolor={"#fff"} icono={<v.iconogoogle />} />
+                <Btn1 funcion={loginGoogle} titulo={"Google"} bgcolor={"#fff"} icono={<v.iconogoogle />} />
                 
             </div>
             <Footer />
@@ -67,6 +67,6 @@ const ContentLogo = styled.section`
         font-weight: 700;
     }
     img{
-        width: 10%;
+        width: 20%;
     }
 `

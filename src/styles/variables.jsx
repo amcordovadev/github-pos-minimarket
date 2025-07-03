@@ -12,7 +12,7 @@ import { TbBrandSupabase } from "react-icons/tb";
 import { FaReact } from "react-icons/fa";
 import { BsArrowDown, BsArrowUpShort } from "react-icons/bs";
 import { FaBalanceScale } from "react-icons/fa";
-import logo from "../assets/logoMiguel.png";
+import logo from "../assets/logoLaParadita.png";
 import { FcGoogle } from "react-icons/fc";
 
 import { RiCloseLine } from "react-icons/ri";
@@ -47,6 +47,9 @@ import { GrAdd } from "react-icons/gr";
 
 
 export const v = {
+  colorPrincipal: `#00F34A`,
+  colorSecundario: `#DAC1FF`,
+  colorInstagram: 'background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%)',
   iconoagregar:GrAdd,
   iconoimagenvacia: FcImageFile,
   iconoemijivacio:BsEmojiDizzy,
@@ -87,7 +90,7 @@ export const v = {
   bpbart: `48em`,
   bpmarge: `62em`,
   bphomer: `75em`,
-  colorPrincipal: `#00F34A`,
+  
   boxshadowGray: `0px 10px 15px -3px rgba(0,0,0,0.1)`,
   iconoFlechabajo: IoIosArrowDown,
   iconocorona: RiVipCrownFill,
@@ -113,8 +116,7 @@ export const v = {
   iconobars: BsBarChartLine,
   iconocalculadora: AiOutlineCalculator,
   iconocheck: BsCalendarCheck,
-
-  colorSecundario: `#DAC1FF`,
+  
   iconoflechaderecha:IoIosArrowForward,
   iconoflechaizquierda:IoIosArrowBack,
   colorselector:"#BF94FF",

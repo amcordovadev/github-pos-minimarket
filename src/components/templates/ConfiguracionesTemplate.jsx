@@ -1,9 +1,12 @@
 import styled from "styled-components";
-import fondocuadros from "../../assets/fondocuadros.svg";
+import fondocuadros from "../../assets/fondocuadros.png";
 import { Link } from "react-router-dom";
-import { DataModulosConfiguracion } from "../../utils/dataEstatica";
 import { useEffect } from "react";
+import { useModulosStore } from "../../index";
 export function ConfiguracionesTemplate() {
+  //datos extraidos de la base de datos
+  const {dataModulos} = useModulosStore();
+
   useEffect(() => {
     const handleMouseMove = (e) => {
       document.querySelectorAll(".card").forEach((card) => {
@@ -28,10 +31,10 @@ export function ConfiguracionesTemplate() {
   return (
     <Container>
       <div id="cards">
-        {DataModulosConfiguracion.map((item, index) => {
+        {dataModulos.map((item, index) => {
           return (
             <Link
-              to=""
+              to={item.link}
               className={item.state ? "card" : "card false"}
               key={index}
             >
@@ -44,8 +47,8 @@ export function ConfiguracionesTemplate() {
                   <div className="card-info">
                     <i className="fa-duotone fa-unicorn"></i>
                     <div className="card-info-title">
-                      <h3>{item.title}</h3>
-                      <h4>{item.subtitle}</h4>
+                      <h3>{item.nombre}</h3>
+                      <h4>{item.descripcion}</h4>
                     </div>
                   </div>
                 </div>

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Icono } from "../../index";
-export function Btnsave({
+export function Btn1({
   funcion,
   titulo,
   bgcolor,
