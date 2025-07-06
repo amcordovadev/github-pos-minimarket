@@ -48,6 +48,7 @@ export function RegistrarCategorias({
     setIsExploding(true);
   };
   async function insertar(data) {
+    console.log("[ACTION]",accion);
     if (accion === "Editar") {
       const p = {
         _nombre: ConvertirCapitalize(data.descripcion),

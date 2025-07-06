@@ -54,7 +54,7 @@ export function RegistrarProductos({
   } = useForm();
   const { isPending, mutate: doInsertar } = useMutation({
     mutationFn: insertar,
-    mutationKey: "insertar marca",
+    mutationKey: "insertar producto",
     onError: (err) => console.log("El error", err.message),
     onSuccess: () => cerrarFormulario(),
   });
@@ -66,16 +66,31 @@ export function RegistrarProductos({
     setIsExploding(true);
   };
   async function insertar(data) {
+    console.log("[ACTION]", accion);
+    console.log("[data]", data);
+    console.log("[dataempresa]", dataempresa);
+    console.log("[dataSelect]", dataSelect);
+
     if (accion === "Editar") {
       const p = {
-        _nombre: ConvertirCapitalize(data.marca),
+        _nombre: ConvertirCapitalize(data.nombre),
         _id_empresa: dataempresa.id,
         _id: dataSelect.id,
       };
       await editarProductos(p);
     } else {
+      //id_categoria,
+      //sevende_por,
+
+      //stock_minimo,
+      //maneja_inventarios,
+      //maneja_multiprecios
       const p = {
-        _nombre: ConvertirCapitalize(data.marca),
+        _nombre: ConvertirCapitalize(data.nombre),
+        _precio_venta: Number(data.precio_venta),
+        _precio_compra :Number(data.precio_compra),
+        _codigo_barras:data.codigo_barras,
+        _codigo_interno:data.codigo_interno,
         _id_empresa: dataempresa.id,
       };
 

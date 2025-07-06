@@ -3,7 +3,8 @@ import { supabase } from "../index";
 const tabla = "productos";
 
 export async function InsertarProductos(p) {
-    const { error, data } = await supabase.rpc("insertarmarca", p)
+    console.log("[PRODUCTO-CREATE]",p)
+    const { error, data } = await supabase.rpc("insertarproducto", p)
     if (error) {
         Swal.fire({
             icon: "error",
