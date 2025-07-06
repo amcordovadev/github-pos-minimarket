@@ -4,7 +4,7 @@ export const Icono = styled.span`
    align-items:center;
    text-align:center;
     font-size:20px;
-    color:${(props)=>props.$color};
+    color:${(props) => props.$color};
   
   
 `

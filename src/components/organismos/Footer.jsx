@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { GiPadlock } from "react-icons/gi";
-import {FaInstagram} from "react-icons/fa";
+import {v} from "../../styles/variables"
+
 
 export function Footer() {
     return (
@@ -15,7 +16,11 @@ export function Footer() {
                     <span>+56 976580991</span> o a través de nuestros medios digitales.
                     <SocialButtonsContainer>
                         <SocialButton href="https://www.instagram.com/minimarket.laparadita/" target="_blank" rel="Instagram">
-                            {<FaInstagram />}
+                            {<v.iconoinstagram/>}
+                        </SocialButton>
+
+                        <SocialButton href=" " target="_blank" rel="WhatsApp">
+                            {<v.iconowhatsapp/>}
                         </SocialButton>
                     </SocialButtonsContainer>
                 </span>
@@ -87,7 +92,7 @@ const SocialButton = styled.a`
   border-radius: 50%;
   background-color: #555;
   color: white;
-  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
+  
   font-size: 18px;
   text-decoration: none;
   transition: background 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;
@@ -96,6 +101,11 @@ const SocialButton = styled.a`
     background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
     filter: brightness(1.15);
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+  }
+
+  & .whatsapp-icon:hover {
+    font-size: 20px;
+    color: green;
   }
   
 `;

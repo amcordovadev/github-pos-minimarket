@@ -23,7 +23,7 @@ export const AuthContextProvider = ({ children }) => {
             // console.log(event);
         });
         return () => {
-            //siempre escuchara al bak-end si el usuario se ha logeado o cerro sesión y si el tolen expiro de google
+            //siempre escuchara al bak-end si el usuario se ha logeado o cerro sesión y si el token expiro de google
             data.subscription;
         }
     }, []);

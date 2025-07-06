@@ -44,11 +44,16 @@ import { BsEmojiDizzy } from "react-icons/bs";
 import { FcImageFile } from "react-icons/fc";
 import { IoIosArrowBack } from "react-icons/io";
 import { GrAdd } from "react-icons/gr";
-
+import { FaSearch } from "react-icons/fa";
+import {FaInstagram,FaWhatsapp} from "react-icons/fa";
 
 export const v = {
   colorPrincipal: `#70AD21`,
   colorSecundario: `#DAC1FF`,
+
+  iconobuscar: FaSearch,
+  iconoinstagram: FaInstagram,
+  iconowhatsapp: FaWhatsapp,
   
   iconoagregar:GrAdd,
   iconoimagenvacia: FcImageFile,

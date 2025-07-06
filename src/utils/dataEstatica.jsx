@@ -82,14 +82,14 @@ export const DataModulosConfiguracion = [
     title: "Productos",
     subtitle: "Registra tus productos",
     icono: "https://i.ibb.co/85zJ6yG/caja-del-paquete.png",
-    link: "/configurar/productos",
+    link: "/configuracion/productos",
 
   },
   {
     title: "Personal",
     subtitle: "Ten el control de tu personal",
     icono: "https://i.ibb.co/5vgZ0fX/hombre.png",
-    link: "/configurar/usuarios",
+    link: "/configuracion/usuarios",
 
   },
 
@@ -97,7 +97,7 @@ export const DataModulosConfiguracion = [
     title: "Tu empresa",
     subtitle: "Configura tus opciones básicas",
     icono: "https://i.ibb.co/x7mHPgm/administracion-de-empresas.png",
-    link: "/configurar/empresa",
+    link: "/configuracion/empresa",
 
   },
   {
@@ -112,7 +112,7 @@ export const DataModulosConfiguracion = [
     title: "Marca de productos",
     subtitle: "Gestiona tus marcas",
     icono: "https://i.ibb.co/1qsbCRb/piensa-fuera-de-la-caja.png",
-    link: "/configurar/marca",
+    link: "/configuracion/marcas",
 
   },
 

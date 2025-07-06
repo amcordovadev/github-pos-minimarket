@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import { Btn1, Buscador, RegistrarCategorias, TablaCategorias, Title, useCategoriasStore } from "../../index";
+import { Btn1, Buscador, RegistrarCategorias, RegistrarProductos, TablaCategorias, TablaProductos, Title, useCategoriasStore, useProductosStore } from "../../index";
 import { v } from "../../styles/variables";
 import { useState } from "react";
 import ConfettiExplosion from 'react-confetti-explosion';
 
-export function CategoriasTemplate() {
+export function ProductosTemplate() {
   const [openRegistro, SetopenRegistro] = useState(false);
-  const { datacategorias, setBuscador } = useCategoriasStore()
+  const { dataProductos, setBuscador } = useProductosStore()
   const [accion, setAccion] = useState("");
   const [dataSelect, setdataSelect] = useState([]);
   const [isExploding, setIsExploding] = useState(false);
@@ -20,11 +20,11 @@ export function CategoriasTemplate() {
   return (<Container>
 
     {
-      openRegistro && (<RegistrarCategorias setIsExploding={setIsExploding} onClose={() => SetopenRegistro(!openRegistro)} dataSelect={dataSelect} accion={accion} />)
+      openRegistro && (<RegistrarProductos setIsExploding={setIsExploding} onClose={() => SetopenRegistro(!openRegistro)} dataSelect={dataSelect} accion={accion} />)
     }
 
     <section className="area1">
-      <Title>Categorias</Title>
+      <Title>Productos</Title>
       <Btn1 funcion={nuevoRegistro} bgcolor={v.colorPrincipal} titulo={"Nuevo"} icono={<v.iconoagregar />} />
     </section>
 
@@ -34,7 +34,7 @@ export function CategoriasTemplate() {
 
     <section className="main">
       <ConfettiWrapper> {isExploding && <ConfettiExplosion force={0.8} duration={3000} particleCount={250} width={1600} />} </ConfettiWrapper>
-      <TablaCategorias setdataSelect={setdataSelect} setAccion={setAccion} SetopenRegistro={SetopenRegistro} data={datacategorias} />
+      <TablaProductos setdataSelect={setdataSelect} setAccion={setAccion} SetopenRegistro={SetopenRegistro} data={dataProductos} />
     </section>
   </Container>);
 }

@@ -18,3 +18,12 @@ export async function InsertarAdmin(p) {
         return;
     }
 }
+
+export async function ObtenerIdAuthSupabase() {
+    const {data: {session}} = await supabase.auth.getSession();
+    if (session != null) {
+        const {user} = session;
+        const idauth = user.id;
+        return idauth;
+    }
+}
