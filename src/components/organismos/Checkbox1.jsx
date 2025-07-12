@@ -4,7 +4,7 @@ export function Checkbox1({isChecked,onChange}) {
   return (
     <Container>
       <input checked={isChecked} onChange={onChange}  type="checkbox" />
-      <div class="checkmark"></div>
+      <div className="checkmark"></div>
     </Container>
   );
 }

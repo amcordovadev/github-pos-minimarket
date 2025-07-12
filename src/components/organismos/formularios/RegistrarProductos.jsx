@@ -11,21 +11,25 @@ import {
   useSucursalesStore,
   ListaDesplegable,
   useCategoriasStore,
+  Btngenerarcodigo,
+  useAlmacenesStore,
+  Checkbox1
 } from "../../../index";
 import { useForm } from "react-hook-form";
 import { useEmpresaStore } from "../../../store/EmpresaStore";
 import { useMutation } from "@tanstack/react-query";
 import { Device } from "../../../styles/BreakPoints"
 import { ContainerSelector } from "../../atomos/ContainerSelector";
-import { useState } from "react";
-import { Checkbox1 } from "../Checkbox1";
+import { useEffect, useState } from "react";
 
 export function RegistrarProductos({
   onClose,
   dataSelect,
   accion,
-  setIsExploding,
+  setIsExploding
 }) {
+
+  const [sevendepor, setSevendepor] = useState("UNIDAD");
   //Validar checkbox
   const [isChecked1, setIsChecked1] = useState(true);
   const [isChecked2, setIsChecked2] = useState(false);
@@ -33,14 +37,17 @@ export function RegistrarProductos({
     if (checkboxNumber === 1) {
       setIsChecked1(true)
       setIsChecked2(false)
+      setSevendepor("UNIDAD")
     } else {
       setIsChecked1(false)
       setIsChecked2(true)
+      setSevendepor("GRANEL")
     }
   }
 
-  const { insertarProductos, editarProductos } = useProductosStore();
+  const { insertarProductos, editarProductos, codigogenerado, generarCodigo } = useProductosStore();
   const { dataempresa } = useEmpresaStore();
+  const { insertarStockAlmacenes } = useAlmacenesStore();
   const [stateInventarios, setStateInventarios] = useState(false);
   const [stateListaSucursales, setStateListaSucursales] = useState(false);
   const [stateListaCategorias, setStateListaCategorias] = useState(false);
@@ -54,7 +61,7 @@ export function RegistrarProductos({
   } = useForm();
   const { isPending, mutate: doInsertar } = useMutation({
     mutationFn: insertar,
-    mutationKey: "insertar producto",
+    mutationKey: ["insertar producto"],
     onError: (err) => console.log("El error", err.message),
     onSuccess: () => cerrarFormulario(),
   });
@@ -66,10 +73,12 @@ export function RegistrarProductos({
     setIsExploding(true);
   };
   async function insertar(data) {
+    validarVacios(data);
+
     console.log("[ACTION]", accion);
     console.log("[data]", data);
     console.log("[dataempresa]", dataempresa);
-    console.log("[dataSelect]", dataSelect);
+    console.log("[categoriaItemSelect]", categoriaItemSelect);
 
     if (accion === "Editar") {
       const p = {
@@ -78,25 +87,87 @@ export function RegistrarProductos({
         _id: dataSelect.id,
       };
       await editarProductos(p);
-    } else {
-      //id_categoria,
-      //sevende_por,
-
-      //stock_minimo,
-      //maneja_inventarios,
-      //maneja_multiprecios
+    }
+    else {
       const p = {
         _nombre: ConvertirCapitalize(data.nombre),
-        _precio_venta: Number(data.precio_venta),
-        _precio_compra :Number(data.precio_compra),
-        _codigo_barras:data.codigo_barras,
-        _codigo_interno:data.codigo_interno,
+        _precio_venta: parseFloat(data.precio_venta),
+        _precio_compra: parseFloat(data.precio_compra),
+        _id_categoria: categoriaItemSelect?.id,
+        _codigo_barras: data.codigo_barras,
+        _codigo_interno: data.codigo_interno,
         _id_empresa: dataempresa.id,
+        _sevende_por: sevendepor,
+        _maneja_inventarios: stateInventarios,
+        _maneja_multiprecios: false
       };
 
-      await insertarProductos(p);
+      //retorna el id_producto en el rpc de insertarProductos
+      console.log("[p]", p)
+      const id_producto_nuevo = await insertarProductos(p);
+
+      if (stateInventarios) {
+        const palmacenes = {
+          id_sucursal: sucursalesItemSelect.id,
+          id_producto: id_producto_nuevo,
+          stock: parseFloat(data.stock),
+          stock_minimo: parseFloat(data.stock_minimo)
+        };
+        console.log("[insertarStockAlmacenes]", palmacenes)
+        await insertarStockAlmacenes(palmacenes);
+      }
     }
   }
+
+  //#region validar vacios
+  function validarVacios(data) {
+    //validar vacio para codigos de barras
+    if (data.codigo_interno.trim() === "") {
+      generarCodigoInterno();
+      data.codigo_interno = dataSelect.codigo_interno;
+    }
+    if (data.codigo_barras.trim() === "") {
+      generarCodigoBarras();
+      data.codigo_barras = dataSelect.codigo_barras;
+    }
+    //validar vacios para precios
+    if (data.precio_venta.trim() === "") {
+      data.precio_venta = 0
+    }
+    if (data.precio_compra.trim() === "") {
+      data.precio_compra = 0
+    }
+    //validar vacios para stock
+    if (stateInventarios) {
+      if (data.stock.trim() === "") {
+        data.stock = 0
+      }
+      if (data.stock_minimo.trim() === "") {
+        data.stock_minimo = 0
+      }
+    }
+  }
+  //#endregion
+
+  //#region generar codigo automatizado
+  async function generarCodigoBarras() {
+    const code = await generarCodigo()
+    dataSelect.codigo_barras = code
+  }
+  async function generarCodigoInterno() {
+    const code = await generarCodigo()
+    dataSelect.codigo_interno = code
+  }
+  //#endregion
+
+  //#region validar accion
+  useEffect(() => {
+    if (accion != "Editar") {
+      generarCodigoBarras()
+      generarCodigoInterno()
+    }
+  }, [])
+  //#endregion
   return (
     <Container>
       {isPending ? (
@@ -132,7 +203,7 @@ export function RegistrarProductos({
                     })}
                   />
                   <label className="form__label">producto</label>
-                  {errors.descripcion?.type === "required" && (
+                  {errors.nombre?.type === "required" && (
                     <p>Campo requerido</p>
                   )}
                 </InputText>
@@ -142,18 +213,14 @@ export function RegistrarProductos({
                 <InputText icono={<v.iconoflechaderecha />}>
                   <input
                     className="form__field"
-                    defaultValue={dataSelect.nombre}
+                    defaultValue={dataSelect.precio_venta}
                     step="0.01"
                     type="number"
                     placeholder="precio venta"
-                    {...register("precio_venta", {
-                      required: true,
-                    })}
+                    {...register("precio_venta")}
                   />
                   <label className="form__label">precio venta</label>
-                  {errors.precio_venta?.type === "required" && (
-                    <p>Campo requerido</p>
-                  )}
+                  
                 </InputText>
               </article>
 
@@ -161,57 +228,51 @@ export function RegistrarProductos({
                 <InputText icono={<v.iconoflechaderecha />}>
                   <input
                     className="form__field"
-                    defaultValue={dataSelect.nombre}
+                    defaultValue={dataSelect.precio_compra}
                     step="0.01"
                     type="number"
                     placeholder="precio compra"
-                    {...register("precio_compra", {
-                      required: true,
-                    })}
+                    {...register("precio_compra")}
                   />
                   <label className="form__label">precio compra</label>
-                  {errors.precio_compra?.type === "required" && (
-                    <p>Campo requerido</p>
-                  )}
+                  
                 </InputText>
               </article>
 
-              <article>
+              <article className="contentPadregenerar">
                 <InputText icono={<v.iconoflechaderecha />}>
                   <input
                     className="form__field"
-                    defaultValue={dataSelect.nombre}
+                    defaultValue={dataSelect.codigo_barras}
                     step="1"
                     type="text"
                     placeholder="codigo de barras"
-                    {...register("codigo_barras", {
-                      required: true,
-                    })}
+                    {...register("codigo_barras")}
                   />
                   <label className="form__label">codigo de barras</label>
-                  {errors.codigo_barras?.type === "required" && (
-                    <p>Campo requerido</p>
-                  )}
+
                 </InputText>
+                <ContainerBtngenerar>
+                  <Btngenerarcodigo titulo={"Generar"} funcion={generarCodigoBarras} />
+                </ContainerBtngenerar>
               </article>
 
-              <article>
+              <article className="contentPadregenerar">
                 <InputText icono={<v.iconoflechaderecha />}>
                   <input
                     className="form__field"
-                    defaultValue={dataSelect.nombre}
+                    defaultValue={dataSelect.codigo_interno}
                     step="1"
                     type="text"
                     placeholder="codigo interno"
-                    {...register("codigo_interno", {
-                      required: true,
-                    })}
+                    {...register("codigo_interno")}
                   />
                   <label className="form__label">codigo interno</label>
-                  {errors.codigo_interno?.type === "required" && (
-                    <p>Campo requerido</p>
-                  )}
+
                 </InputText>
+                <ContainerBtngenerar>
+                  <Btngenerarcodigo titulo={"Generar"} funcion={generarCodigoInterno} />
+                </ContainerBtngenerar>
               </article>
             </section>
 
@@ -220,10 +281,10 @@ export function RegistrarProductos({
 
               <ContainerSelector>
                 <label>UNIDAD </label>
-                <Checkbox1 isChecked={isChecked1} onChange={() => handleCheckboxChange(1)}/>
+                <Checkbox1 isChecked={isChecked1} onChange={() => handleCheckboxChange(1)} />
 
                 <label>GRANEL(decimales) </label>
-                <Checkbox1 isChecked={isChecked2} onChange={() => handleCheckboxChange(2)}/>
+                <Checkbox1 isChecked={isChecked2} onChange={() => handleCheckboxChange(2)} />
               </ContainerSelector>
 
               <ContainerSelector>
@@ -265,18 +326,14 @@ export function RegistrarProductos({
                       <InputText icono={<v.iconoflechaderecha />}>
                         <input
                           className="form__field"
-                          defaultValue={dataSelect.nombre}
+                          defaultValue={dataSelect.stock}
                           step="0.01"
                           type="number"
                           placeholder="stock"
-                          {...register("stock", {
-                            required: true,
-                          })}
+                          {...register("stock")}
                         />
                         <label className="form__label">stock</label>
-                        {errors.stock?.type === "required" && (
-                          <p>Campo requerido</p>
-                        )}
+
                       </InputText>
                     </article>
 
@@ -284,18 +341,14 @@ export function RegistrarProductos({
                       <InputText icono={<v.iconoflechaderecha />}>
                         <input
                           className="form__field"
-                          defaultValue={dataSelect.nombre}
+                          defaultValue={dataSelect.stock_minimo}
                           step="0.01"
                           type="number"
                           placeholder="stock minimo"
-                          {...register("stock_minimo", {
-                            required: true,
-                          })}
+                          {...register("stock_minimo")}
                         />
                         <label className="form__label">stock minimo</label>
-                        {errors.stock_minimo?.type === "required" && (
-                          <p>Campo requerido</p>
-                        )}
+
                       </InputText>
                     </article>
 
@@ -357,17 +410,27 @@ const Container = styled.div`
     .formulario {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 20px;
+      gap: 15px;
       @media ${Device.tablet} {
         grid-template-columns: repeat(2, 1fr);
       }
-      section{
+      .seccion1, .seccion2{
         gap: 20px;
         display: flex;
         flex-direction: column;
       }
+      .contentPadregenerar{
+        position: relative;
+      }
+      
     }
   }
+`;
+
+const ContainerBtngenerar = styled.div`
+  position: absolute;
+  right: 0;
+  top: 10%;
 `;
 
 const ContainerStock = styled.div`

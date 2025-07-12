@@ -6,7 +6,7 @@ import {
 } from "../../../index";
 import Swal from "sweetalert2";
 import { v } from "../../../styles/variables";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -22,9 +22,9 @@ export function TablaProductos({
   setdataSelect,
   setAccion,
 }) {
-  if (data==null) return;
+  if (data == null) return null;
   const [pagina, setPagina] = useState(1);
-  const [datas, setData] = useState(data);
+  // const [datas, setData] = useState(data);
   const [columnFilters, setColumnFilters] = useState([]);
 
   const { eliminarProductos } = useProductosStore();
@@ -66,8 +66,8 @@ export function TablaProductos({
     setdataSelect(data);
     setAccion("Editar");
   }
-  const columns = [
-    
+  const columns = useMemo(() =>[
+
     {
       accessorKey: "nombre",
       header: "Descripcion",
@@ -82,15 +82,15 @@ export function TablaProductos({
 
     {
       accessorKey: "acciones",
-      header: "",
+      header: "Acciones",
       enableSorting: false,
       cell: (info) => (
-        <td data-title="Acciones" className="ContentCell">
+        <div data-title="Acciones" className="ContentCell">
           <ContentAccionesTabla
             funcionEditar={() => editar(info.row.original)}
             funcionEliminar={() => eliminar(info.row.original)}
           />
-        </td>
+        </div>
       ),
       enableColumnFilter: true,
       filterFn: (row, columnId, filterStatuses) => {
@@ -99,30 +99,32 @@ export function TablaProductos({
         return filterStatuses.includes(status?.id);
       },
     },
-  ];
+  ], []);
   const table = useReactTable({
     data,
     columns,
     state: {
       columnFilters,
     },
+    onColumnFiltersChange: setColumnFilters,
+
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     columnResizeMode: "onChange",
     meta: {
-      updateData: (rowIndex, columnId, value) =>
-        setData((prev) =>
-          prev.map((row, index) =>
-            index === rowIndex
-              ? {
-                  ...prev[rowIndex],
-                  [columnId]: value,
-                }
-              : row
-          )
-        ),
+      // updateData: (rowIndex, columnId, value) =>
+      //   setData((prev) =>
+      //     prev.map((row, index) =>
+      //       index === rowIndex
+      //         ? {
+      //           ...prev[rowIndex],
+      //           [columnId]: value,
+      //         }
+      //         : row
+      //     )
+      //   ),
     },
   });
   return (
@@ -152,33 +154,27 @@ export function TablaProductos({
                     <div
                       onMouseDown={header.getResizeHandler()}
                       onTouchStart={header.getResizeHandler()}
-                      className={`resizer ${
-                        header.column.getIsResizing() ? "isResizing" : ""
-                      }`}
+                      className={`resizer ${header.column.getIsResizing() ? "isResizing" : ""
+                        }`}
                     />
                   </th>
                 ))}
               </tr>
             ))}
           </thead>
+          
           <tbody>
-            {table.getRowModel().rows.map(item=>(
-              
-                <tr key={item.id}>
-                  {item.getVisibleCells().map(cell => (
-                  
-                      <td key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </td>
-                    
-                  ))}
-                </tr>
-             
+            {table.getRowModel().rows.map(item => (
+              <tr key={item.id}>
+                {item.getVisibleCells().map(cell => (
+                  <td key={cell.id} data-title={cell.column.columnDef.header}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
             ))}
           </tbody>
+
         </table>
         <Paginacion
           table={table}
@@ -230,7 +226,7 @@ const Container = styled.div`
       }
       th {
         
-        border-bottom: 2px solid ${({theme})=>theme.color2};
+        border-bottom: 2px solid ${({ theme }) => theme.color2};
         font-weight:700;
         text-align: center;
         color: ${({ theme }) => theme.text};

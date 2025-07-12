@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { BuscarProductos, EditarProductos, EliminarProductos, InsertarProductos, MostrarProductos } from "../index";
+import { BuscarProductos, EditarProductos, EliminarProductos, GenerarCodigo, InsertarProductos, MostrarProductos } from "../index";
 
 export const useProductosStore = create((set, get) => ({
     buscador: "",
@@ -19,11 +19,14 @@ export const useProductosStore = create((set, get) => ({
     selectProductos: (p) => {
         set({ ProductosItemSelect: p })
     },
-    insertarProductos: async (p, file) => {
-        await InsertarProductos(p, file);
+    insertarProductos: async (p) => {
+        //response para obtener lo que se necesita de InsertarProductos, retornar id
+        const response = await InsertarProductos(p);
+        console.log("[response insertarProductos]", response)
         const { mostrarProductos } = get();
         const { parametros } = get();
         set(mostrarProductos(parametros))
+        return response;
     },
     eliminarProductos: async (p) => {
         await EliminarProductos(p)
@@ -42,4 +45,10 @@ export const useProductosStore = create((set, get) => ({
         set({ dataProductos: response })
         return response;
     },
+    codigogenerado: 0,
+    generarCodigo: async () => {
+        const response = GenerarCodigo({id:2})
+        set({codigogenerado:response})
+        return response;
+    }
 }));
